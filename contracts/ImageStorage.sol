@@ -17,11 +17,15 @@ contract ImageStorage {
     }
 
     function addImage(string calldata _imgTitle, string calldata _imgHash) public {
-        // checks on input
+        if(bytes(_imgTitle).length == 0) {
+            revert InvalidInput();
+        }
+        if(bytes(_imgHash).length == 0) {
+            revert InvalidInput();
+        }
         images[++imgCounter] = Image({imgTitle: _imgTitle, imgHash: _imgHash, imgAuthor: msg.sender});
         emit ImageAdded(imgCounter, _imgTitle, _imgHash, msg.sender);
     }
 }
 
 // string and bytes, order of declarations, ++ operation gas,
-// bytes(s).length

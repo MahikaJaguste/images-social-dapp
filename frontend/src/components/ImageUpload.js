@@ -10,7 +10,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 
 function ImageUpload() {
 
-  const {signer, storageContract, imgCounter, setImgCounter} = useContext(AppContext);
+  const {signer, storageContract } = useContext(AppContext);
 
   const [image, setImage] = useState(null);
   const [imgTitle, setImgTitle] = useState(null);
@@ -33,9 +33,10 @@ function ImageUpload() {
     if(image){
       try {
         setIsLoading(true);
+        console.log('in here')
         const created = await client.add(image);
+        console.log(created.path)
         await storageContract.connect(signer).addImage(imgTitle, created.path);
-        setImgCounter(imgCounter + 1);
         setIsLoading(false);
       } 
       catch (error) {

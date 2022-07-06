@@ -4,8 +4,7 @@ import { ethers } from 'ethers';
 import STORAGE_ABI from './artifacts/contracts/ImageStorage.sol/ImageStorage.json';
 import ConnectWallet from './components/ConnectWallet.js';
 import ImageUpload from './components/ImageUpload.js';
-// import WithdrawForm from './components/WithdrawForm.js';
-// import Balances from './components/Balances.js';
+import ImageFeed from './components/ImageFeed.js';
 
 export const AppContext = createContext();
 
@@ -15,7 +14,6 @@ function App() {
   const [signer, setSigner] = useState(null)
   const [provider, setProvider] = useState(null);
   const [storageContract, setStorageContract] = useState(null);
-  const [imgCounter, setImgCounter] = useState(null);
 
   const contextObj = {
     accounts,
@@ -26,16 +24,14 @@ function App() {
     setProvider,
     storageContract,
     setStorageContract,
-    imgCounter,
-    setImgCounter
   };
 
-  // useEffect(() => {
-  //   // rinkeby
-  //   const storageContractAddress = ""
-  //   const myContract = new ethers.Contract(storageContractAddress, STORAGE_ABI.abi, provider);
-  //   setStorageContract(myContract);
-  // }, [provider]);
+  useEffect(() => {
+    // rinkeby
+    const storageContractAddress = "0x81E1429974423ed3D93C953A300b1C2E094333eF"
+    const myContract = new ethers.Contract(storageContractAddress, STORAGE_ABI.abi, provider);
+    setStorageContract(myContract);
+  }, [provider]);
 
   return (
     <AppContext.Provider value={contextObj}>
@@ -48,6 +44,7 @@ function App() {
               <br/>
               <br/>
               <ImageUpload/>
+              <ImageFeed/>
             </>
             
             : 

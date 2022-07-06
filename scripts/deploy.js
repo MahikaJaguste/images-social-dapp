@@ -17,5 +17,5 @@ main()
     process.exit(1);
 }); // Calling the function to deploy the contract 
 
-// Rinkeby address: 
+// Rinkeby address: 0x81E1429974423ed3D93C953A300b1C2E094333eF
 // Mumbai address: 
