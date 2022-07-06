@@ -15,6 +15,7 @@ function App() {
   const [signer, setSigner] = useState(null)
   const [provider, setProvider] = useState(null);
   const [storageContract, setStorageContract] = useState(null);
+  const [imgCounter, setImgCounter] = useState(null);
 
   const contextObj = {
     accounts,
@@ -24,7 +25,9 @@ function App() {
     provider,
     setProvider,
     storageContract,
-    setStorageContract
+    setStorageContract,
+    imgCounter,
+    setImgCounter
   };
 
   // useEffect(() => {
@@ -40,12 +43,13 @@ function App() {
           <ConnectWallet/>
           <br/>
           {accounts ? 
-            <h1>
-              Images Social Dapp
+            <>
+              <h1>Images Social Dapp</h1>
               <br/>
               <br/>
               <ImageUpload/>
-            </h1>
+            </>
+            
             : 
             <p>Please connect wallet to proceed!</p>
           }

@@ -1,31 +1,49 @@
-import { useState, useContext, useEffect } from "react";
-import { ethers } from 'ethers';
+import { useState, useContext } from "react";
 import { AppContext } from '../App.js';
+import { create } from "ipfs-http-client";
 import { Card, Form, Button } from 'react-bootstrap';
+import { Buffer } from 'buffer';
 
+// @ts-ignore
+window.Buffer = Buffer;
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 function ImageUpload() {
 
-  const {signer, storageContract} = useContext(AppContext);
+  const {signer, storageContract, imgCounter, setImgCounter} = useContext(AppContext);
 
   const [image, setImage] = useState(null);
+  const [imgTitle, setImgTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(image);
-    // if(ethDeposit){
-    //   setIsLoading(true);
-    //   try{
-    //     const txn = await vaultContract.connect(signer).deposit({ value: ethers.utils.parseEther(ethDeposit) });
-    //     await txn.wait();
-    //   }
-    //   catch(err){
-    //     alert('Transaction failed');
-    //   }
-    //   setIsLoading(false);  
-    // }   
-  }
+  const retrieveFile = (e) => {
+    const data = e.target.files[0];
+    if(data['type'].split('/')[0] === 'image'){
+      const reader = new window.FileReader();
+      reader.readAsArrayBuffer(data);
+      reader.onloadend = () => {
+        setImage(Buffer(reader.result));
+      };
+    } 
+    e.preventDefault();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(image){
+      try {
+        setIsLoading(true);
+        const created = await client.add(image);
+        await storageContract.connect(signer).addImage(imgTitle, created.path);
+        setImgCounter(imgCounter + 1);
+        setIsLoading(false);
+      } 
+      catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+
 
   return (
   
@@ -34,16 +52,17 @@ function ImageUpload() {
 
     <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Title</Form.Label>
+        <br/>
+        <Form.Control type="text"
+                onChange={(e) => setImgTitle(e.target.value)}/>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Add Image</Form.Label>
+          <br/>
           <Form.Control type="file" 
                 accept="image/*"
-                onChange={(e) => {
-                        const file = e.target.files[0];
-                        if(file['type'].split('/')[0] === 'image'){
-                            setImage(file);
-                        }
-                    }
-                } />
+                onChange={retrieveFile}/>
         </Form.Group>
         {/* <Form.Text className="text-muted">
         {coinToBeBorrowed ? <p>You can borrow approximately {coinToBeBorrowed} MSC.</p> : <p>Enter deposit value in ETH</p>}
@@ -56,7 +75,6 @@ function ImageUpload() {
           {isLoading ? 'Processing...' : 'Add'}
         </Button>
         </Form>
-
     </Card.Body>
     </Card>
 
