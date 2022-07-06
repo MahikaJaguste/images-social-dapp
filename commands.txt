@@ -1,0 +1,8 @@
+npm init --yes
+npx create-create-app frontend
+npm i hardhat --save-dev
+npx hardhat
+npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle ethereum-waffle chai
+mkdir contracts
+mkdir test
+mkdir scripts
