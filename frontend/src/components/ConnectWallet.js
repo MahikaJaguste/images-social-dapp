@@ -20,8 +20,8 @@ const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]
 });
 
-const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-const signer = provider.getSigner();
+// const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+// const signer = provider.getSigner();
 
 function ConnectWallet() {
 
@@ -34,9 +34,10 @@ function ConnectWallet() {
     } = useWeb3React();
 
     const checkNetwork = async () => {
-        if(chainId != Number(4)){
+        if(chainId && chainId != Number(4)){
+            alert('Switch to rinkeby chain')
             try {
-                await provider.request({
+                await window.ethereum.request({
                     method: "wallet_switchEthereumChain",
                     params: [{ chainId: toHex(4) }]
                 });
@@ -58,7 +59,6 @@ function ConnectWallet() {
 
     const connect = () => {
         activate(injected);
-        console.log('provider', provider);
         setProvider(true);
         checkNetwork();
     }
@@ -77,7 +77,6 @@ function ConnectWallet() {
     }, []);
 
     useEffect(() => {
-        console.log('in change')
         checkNetwork();
     }, [chainId]);
 
@@ -110,7 +109,6 @@ function ConnectWallet() {
             </VStack>
         
         </VStack>
-        {provider}
     </>
     );
 }
