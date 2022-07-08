@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { AppContext } from '../App.js';
 import { create } from "ipfs-http-client";
-import { Card, Form, Button } from 'react-bootstrap';
 import { Buffer } from 'buffer';
 
 // @ts-ignore
@@ -36,8 +35,10 @@ function ImageUpload() {
         console.log('in here')
         const created = await client.add(image);
         console.log(created.path)
-        await storageContract.connect(signer).addImage(imgTitle, created.path);
+        const txn = await storageContract.connect(signer).addImage(imgTitle, created.path);
+        await txn.wait();
         setIsLoading(false);
+        window.location.reload();
       } 
       catch (error) {
         console.log(error.message);
@@ -47,37 +48,17 @@ function ImageUpload() {
 
 
   return (
-  
-    <Card>
-    <Card.Body>
-
-    <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Title</Form.Label>
+     <form onSubmit={handleSubmit}>
+        <label>Title</label>
+        <input type="text" onChange={(e) => setImgTitle(e.target.value)}/>
         <br/>
-        <Form.Control type="text"
-                onChange={(e) => setImgTitle(e.target.value)}/>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Add Image</Form.Label>
-          <br/>
-          <Form.Control type="file" 
-                accept="image/*"
-                onChange={retrieveFile}/>
-        </Form.Group>
-        {/* <Form.Text className="text-muted">
-        {coinToBeBorrowed ? <p>You can borrow approximately {coinToBeBorrowed} MSC.</p> : <p>Enter deposit value in ETH</p>}
-        </Form.Text> */}
-        <Button
-          variant="primary"
-          disabled={isLoading}
-          type="submit"
-        >
+        <label>Add Image</label>
+        <input type="file" accept="image/*" onChange={retrieveFile}/>
+        <button disabled={isLoading} type="submit">
           {isLoading ? 'Processing...' : 'Add'}
-        </Button>
-        </Form>
-    </Card.Body>
-    </Card>
+        </button>
+    </form>
+ 
 
   )
 }

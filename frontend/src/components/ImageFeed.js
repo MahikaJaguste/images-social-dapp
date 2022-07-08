@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
+import { Card } from 'react-bootstrap'
 import { AppContext } from '../App.js';
-import { Card } from 'react-bootstrap';
 
 function ImageUpload() {
 
@@ -11,26 +11,25 @@ function ImageUpload() {
 
   useEffect(() => {
     getImages(); 
-  }, [], [storageContract])
+  }, [])
 
   async function getImages() {
     if(storageContract !== null){
       setIsLoading(true);
       const imgCounter = await storageContract.imgCounter();
-      console.log(imgCounter);
-      // let arr = []
-      // for(let i = imgCounter; i >= 1; i--) {
-      //     const result = await storageContract.images(i);
-      //     arr.push(result);
-      //     setUrlArr(arr);
-      // }
+      let arr = []
+      for(let i = imgCounter; i >= 1; i--) {
+          const result = await storageContract.images(i);
+          arr.push(result);
+          setUrlArr(arr);
+      }
       setIsLoading(false);
     }
   }
 
   return (
     <>
-    {urlArr.length === 0 ?
+    {urlArr.length == 0 ?
       isLoading ? <h3>Loading images</h3>:<h3>Upload data</h3>
         : 
           urlArr.map((el, index) => 
@@ -40,7 +39,6 @@ function ImageUpload() {
             </Card.Body>
             </Card>)
     }
-    {urlArr}
     </>
 
   )

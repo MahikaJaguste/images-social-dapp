@@ -3,10 +3,7 @@ import {
     VStack,
     Button,
     Text,
-    HStack,
-    Select,
-    Input,
-    Box
+    HStack
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
@@ -14,14 +11,10 @@ import { Tooltip } from "@chakra-ui/react";
 import { toHex, truncateAddress } from "../utils.js";
 
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { ethers } from  'ethers';
 
 const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]
 });
-
-// const provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
-// const signer = provider.getSigner();
 
 function ConnectWallet() {
 
@@ -47,24 +40,15 @@ function ConnectWallet() {
             }
         }
     }
-    
-
-    const setProvider = (value) => {
-        window.localStorage.setItem("provider", value);
-    };
-
-    const refreshState = () => {
-        window.localStorage.setItem("provider", undefined);
-    };
 
     const connect = () => {
         activate(injected);
-        setProvider(true);
+        window.localStorage.setItem("provider", true);
         checkNetwork();
     }
 
     const disconnect = () => {
-        refreshState();
+        window.localStorage.setItem("provider", undefined);
         deactivate();
     };
 
