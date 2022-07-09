@@ -48,6 +48,7 @@ function ImageUpload() {
       catch (error) {
         console.log(error.message);
       }
+      setIsLoading(false);
     }
   };
 
