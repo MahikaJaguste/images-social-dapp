@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Card } from 'react-bootstrap'
 import { AppContext } from '../App.js';
-import img1 from '../images-assets/bulb.jpg';
+import img1 from '../images-assets/placeholder.webp';
 import img2 from '../images-assets/butterfly.jpg';
 import img3 from '../images-assets/car-hand.jpg';
 import img4 from '../images-assets/chain.jpg';
@@ -14,7 +14,17 @@ import img10 from '../images-assets/rain.jpg';
 import img11 from '../images-assets/rose.jpg';
 import img12 from '../images-assets/camera.jpg';
 
-import { Box, SimpleGrid, Image, AspectRatio, WrapItem, Wrap } from '@chakra-ui/react';
+import { Box, SimpleGrid, Image, AspectRatio, WrapItem, Wrap, Circle, Spinner , Center, useDisclosure} from '@chakra-ui/react';
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
 
 function ImageUpload() {
 
@@ -22,6 +32,7 @@ function ImageUpload() {
 
   const [urlArr, setUrlArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
     getImages(); 
@@ -47,7 +58,21 @@ function ImageUpload() {
   return (
     <>
     {urlArr.length == 0 ?
-      isLoading ? <h3>Loading images</h3>:<h3>No data</h3>
+      isLoading ? 
+      <Center w='100%' marginTop='15%'>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='teal.500'
+          size='xl'
+        />
+
+      </Center>
+      :
+      <Center w='100%' marginTop='15%'>
+        <h3>No data uploaded</h3>
+      </Center>
         : 
           <Wrap px="1rem" spacing={4} justify="center">
           {urlArr.map((el, index) => (
@@ -65,9 +90,34 @@ function ImageUpload() {
                 width={400}
                 src={`https://ipfs.infura.io/ipfs/${el[1]}`} 
                 alt={`${el[1]}`}
-                fallbackSrc='https://via.placeholder.com/150'
+                fallbackSrc={img1}
                 object-fit='cover'
+                onClick={() => setModalData([el[0], el[1], el[2]])}
               />
+              <Modal isOpen={modalData ? true : false}
+                  onClose={() => setModalData(null)}
+                  isCentered size='lg'>
+                <ModalOverlay 
+                  bg='none'
+                  backdropFilter='auto'
+                  backdropInvert='80%'
+                  backdropBlur='2px'/>
+                <ModalContent>
+                  <ModalHeader>{modalData?modalData[0]:null}</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                  {modalData?"by " + modalData[2]:null}
+                  <br/>
+                  {modalData?"at CID " + modalData[1]:null}
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button colorScheme='red' variant='outline' mr={3} onClick={() => setModalData(null)}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </WrapItem>
           ))}
         </Wrap>

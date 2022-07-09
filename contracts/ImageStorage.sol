@@ -27,5 +27,3 @@ contract ImageStorage {
         emit ImageAdded(imgCounter, _imgTitle, _imgHash, msg.sender);
     }
 }
-
-// string and bytes, order of declarations, ++ operation gas,

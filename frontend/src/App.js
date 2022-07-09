@@ -21,7 +21,7 @@ function App() {
   
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
-  const storageContractAddress = "0x81E1429974423ed3D93C953A300b1C2E094333eF";
+  const storageContractAddress = "0x851ad3A43E98Fe6EA90cB48B7b3490e0af9d6718";
   const storageContract = new ethers.Contract(storageContractAddress, STORAGE_ABI.abi, provider);
 
   const contextObj = {

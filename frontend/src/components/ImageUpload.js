@@ -87,7 +87,7 @@ function ImageUpload() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='red' mr={3} onClick={onClose}>
+            <Button colorScheme='red' variant='outline' mr={3} onClick={onClose}>
               Close
             </Button>
             <Button colorScheme='teal' variant='outline' onClick={handleSubmit}
