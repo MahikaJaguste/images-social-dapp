@@ -2,17 +2,6 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { Card } from 'react-bootstrap'
 import { AppContext } from '../App.js';
 import img1 from '../images-assets/placeholder.webp';
-import img2 from '../images-assets/butterfly.jpg';
-import img3 from '../images-assets/car-hand.jpg';
-import img4 from '../images-assets/chain.jpg';
-import img5 from '../images-assets/jar.jpg';
-import img6 from '../images-assets/lamps.jpg';
-import img7 from '../images-assets/leaf.jpg';
-import img8 from '../images-assets/light-flower.jpg';
-import img9 from '../images-assets/marriage.jpg';
-import img10 from '../images-assets/rain.jpg';
-import img11 from '../images-assets/rose.jpg';
-import img12 from '../images-assets/camera.jpg';
 
 import { Box, SimpleGrid, Image, AspectRatio, WrapItem, Wrap, Circle, Spinner , Center, useDisclosure} from '@chakra-ui/react';
 import {
@@ -37,8 +26,6 @@ function ImageUpload() {
   useEffect(() => {
     getImages(); 
   }, [])
-
-  let arr =[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12]
 
 
   async function getImages() {
