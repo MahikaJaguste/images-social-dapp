@@ -3,7 +3,7 @@ import {
     VStack,
     Button,
     Text,
-    HStack
+    HStack, Box
 } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
@@ -66,16 +66,26 @@ function ConnectWallet() {
 
     return (
     <>
-        <VStack justifyContent="center" alignItems="center" h="100vh">
+        {/* <VStack justifyContent="center" alignItems="center" h="100vh"> */}
         
             <HStack>
                 {!active ? (
-                <Button onClick={connect}>Connect Wallet</Button>
+                <Button  colorScheme='teal' variant='outline' onClick={connect}>Connect Wallet</Button>
                 ) : (
-                <Button onClick={disconnect}>Disconnect</Button>
+                    <>
+                    <Box>
+                    <Tooltip label={`${account}`} placement="bottom">
+                        <Text padding='6px' rounded="12px" overflow="hidden" border='1px' borderColor='black'>
+                            {`${truncateAddress(account)}`}
+                        </Text>
+                    </Tooltip>
+                    </Box>
+                    <Button colorScheme='red' variant='outline' onClick={disconnect}>Disconnect</Button>
+                    </>
+                
                 )}
             </HStack>
-            
+{/*             
             <VStack justifyContent="center" alignItems="center" padding="10px 0">
                 <HStack>
                 <Text>{`Connection Status: `}</Text>
@@ -92,7 +102,7 @@ function ConnectWallet() {
                 <Text>{`Network ID: ${chainId ? chainId : "No Network"}`}</Text>
             </VStack>
         
-        </VStack>
+        </VStack> */}
     </>
     );
 }

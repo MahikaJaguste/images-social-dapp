@@ -10,6 +10,8 @@ import ConnectWallet from './components/ConnectWallet.js';
 import ImageUpload from './components/ImageUpload.js';
 import ImageFeed from './components/ImageFeed.js';
 
+import { Flex, Container, Box, Heading, Spacer, ButtonGroup, Button, Center } from '@chakra-ui/react';
+
 // context
 export const AppContext = createContext();
 
@@ -30,11 +32,25 @@ function App() {
 
   return (
     <AppContext.Provider value={contextObj}>
-      <ConnectWallet/>
-      {active?<ImageUpload/>: <p>Connect Wallet to Upload</p>}
-      <br/>
-      <br/>
-      <ImageFeed/>
+
+      <Flex as="header" position="fixed" backgroundColor="rgba(255, 255, 255, 0.8)" backdropFilter="saturate(180%) blur(5px)"  w="100%"  h="10%"
+        minWidth='max-content' alignItems='center' gap='2'>
+              {/* <Center w='100%'> */}
+              <Heading as='h3' size='2xl' marginLeft='175px' position='absolute'>DGallery</Heading>
+              {/* </Center> */}
+          <Spacer />
+          <ButtonGroup gap='2' >
+            {active?<ImageUpload/>:null} 
+            <ConnectWallet/>
+          </ButtonGroup>
+        
+      </Flex>
+      <Box as="main" paddingTop={12}> 
+        <br/>
+        <br/>
+        <ImageFeed/>
+      </Box>
+        
     </AppContext.Provider>
   );
 }
